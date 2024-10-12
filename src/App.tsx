@@ -2,11 +2,11 @@ import {NavigationContainer} from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import Main from './screens/Main'
 import AndroidDemo from './screens/AndroidDemo'
-import AndroidSecureStoreBackup from './features/android/AndroidSecureStoreBackup'
-import AndroidCloudBackup from './features/android/AndroidCloudBackup'
+import AndroidSecureStoreBackup from './features/AndroidSecureStoreBackup'
+import AndroidCloudBackup from './features/AndroidCloudBackup'
 import IOSDemo from './screens/IOSDemo'
-import IOSSecureStoreBackup from './features/ios/IOSSecureStoreBackup'
-import IOSCloudBackup from './features/ios/IOSCloudBackup'
+import IOSSecureStoreBackup from './features/IOSSecureStoreBackup'
+import IOSCloudBackup from './features/IOSCloudBackup'
 
 export type RootStackParamList = {
   Main: undefined

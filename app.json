@@ -37,6 +37,13 @@
       "url": "https://u.expo.dev/be1e9e9b-48ef-4066-88da-afdfb32d8fde"
     },
     "plugins": [
+      [
+        "react-native-cloud-storage",
+        {
+          "iCloudContainerEnvironment": "Production",
+          "iCloudContainerIdentifier": "iCloud.com.timmyjose.backupspoc"
+        }
+      ],
       "expo-secure-store",
       [
         "expo-build-properties",

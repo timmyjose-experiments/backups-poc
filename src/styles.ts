@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   smallButton: {
-    backgroundColor: '#dcdcdc',
+    backgroundColor: '#c0c0c0',
     height: 40,
     width: '20%',
     borderRadius: 5,
@@ -30,8 +30,9 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     height: 50,
     width: '50%',
-    borderWidth: 2
-
+    borderWidth: 2,
+    justifyContent: 'center',
+    alignSelf: 'center'
   }
 })
 
