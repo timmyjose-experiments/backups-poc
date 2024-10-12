@@ -22,7 +22,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 20
+    marginTop: 20,
+    marginRight: 10
+  },
+  textInput: {
+    borderColor: '#c0c0c0',
+    paddingLeft: 5,
+    height: 50,
+    width: '50%',
+    borderWidth: 2
+
   }
 })
 
