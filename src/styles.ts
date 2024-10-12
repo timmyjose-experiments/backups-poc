@@ -14,6 +14,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  smallButton: {
+    backgroundColor: '#dcdcdc',
+    height: 40,
+    width: '20%',
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 20
   }
 })
 

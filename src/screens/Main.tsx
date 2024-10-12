@@ -11,12 +11,12 @@ const Main = () => {
     <View style={styles.container}>
       <Pressable
         style={styles.button}
-        onPress={() => navigation.navigate('AndroidBackup')}>
+        onPress={() => navigation.navigate('AndroidDemo')}>
         <Text>Android Backup</Text>
       </Pressable>
       <Pressable
         style={styles.button}
-        onPress={() => navigation.navigate('IOSBackup')}>
+        onPress={() => navigation.navigate('IOSDemo')}>
         <Text>iOS Backup</Text>
         </Pressable>
     </View>

@@ -11,9 +11,19 @@ const AndroidBackup = () => {
     <View style={styles.container}>
       <Pressable
         style={styles.button}
+        onPress={() => navigation.navigate('AndroidSecureStoreBackup')}>
+        <Text>SecureStore Test</Text>
+      </Pressable>
+      <Pressable
+        style={styles.button}
+        onPress={() => navigation.navigate('AndroidCloudBackup')}>
+        <Text>Cloud Test</Text>
+      </Pressable>
+      <Pressable
+        style={styles.smallButton}
         onPress={() => navigation.navigate('Main')}>
-          <Text>Home</Text>
-        </Pressable>
+        <Text>Home</Text>
+      </Pressable>
     </View>
   )
 }

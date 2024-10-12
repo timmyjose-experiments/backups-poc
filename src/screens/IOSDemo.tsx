@@ -11,6 +11,16 @@ const IOSBackup = () => {
     <View style={styles.container}>
       <Pressable
         style={styles.button}
+        onPress={() => navigaton.navigate('IOSecureStoreBackup')}>
+        <Text>SecureStore Test</Text>
+      </Pressable>
+      <Pressable
+        style={styles.button}
+        onPress={() => navigaton.navigate('IOSCloudBackup')}>
+        <Text>iCloud Test</Text>
+      </Pressable>
+      <Pressable
+        style={styles.smallButton}
         onPress={() => navigaton.navigate('Main')}>
         <Text>Home</Text>
       </Pressable>
