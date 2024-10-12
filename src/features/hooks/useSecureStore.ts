@@ -12,6 +12,9 @@ const restore = async (key: string): Promise<string | null> => {
   let result: string | null = 'Not Found'
   try {
     result = await SecureStore.getItemAsync(key)
+    if (result === null) {
+      result = 'Not Found'
+    }
   } catch (err: any) {
     alert(err)
   }
