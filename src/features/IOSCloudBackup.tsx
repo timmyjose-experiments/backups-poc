@@ -42,18 +42,24 @@ const IOSCloudBackup = () => {
 
   const [privateKey, setPrivateKey] = useState<string | null>(null)
   const [restoredPrivateKey, setRestoredPrivateKey] = useState<string | null>(null)
+  const [loadTime, setLoadTime] = useState<number | null>(null)
 
   const handleBackup = useCallback(async () => {
+    const startTime = Date.now()
     await backup(PK_KEY, privateKey)
+    setLoadTime(Date.now() - startTime)
   }, [privateKey])
 
   const handleRestore = useCallback(async () => {
+    const startTime = Date.now()
     setRestoredPrivateKey(await restore(PK_KEY))
+    setLoadTime(Date.now() - startTime)
   }, [])
 
   return (
     <View style={styles.container}>
      { !!restoredPrivateKey && (<Text>Restored pk: {restoredPrivateKey}</Text>) }
+     { loadTime !== null && (<Text>Took {loadTime}ms</Text>)}
       <TextInput
         style={styles.textInput}
         onChangeText={text => { 
