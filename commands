@@ -1,0 +1,44 @@
+List transports:
+
+adb shell bmgr list transports
+
+List available backups:
+
+adb shell bmgr list sets
+
+List current:
+
+adb shell dumpsys backup | grep Current
+
+
+Cloud Backup Testing:
+=====================
+
+
+adb shell bmgr enable true
+
+Local:
+adb shell bmgr transport com.android.localtransport/.LocalTransport | grep -q "Selected transport" || (echo "Error: error selecting local transport"; exit 1) 
+
+Cloud:
+adb shell bmgr transport com.google.android.gms/.backup.BackupTransportService | grep -q "Selected transport" || (echo "Error: error selecting local transport"; exit 1)
+
+adb shell settings put secure backup_local_transport_parameters 'is_encrypted=true'
+adb shell bmgr backupnow "com.timmyjose.backupspoc"| grep -F "Package com.timmyjose.backupspoc with result: Success" || (echo "Backup failed"; exit 1)
+
+Trigger immediate backup:
+
+adb shell bmgr run
+
+https://gist.github.com/kaneelyster/1dc3c7265240f2a8478918c9642da79d?permalink_comment_id=4789028
+
+
+Restore:
+========
+
+adb shell bmgr restore <TOKEN> com.timmyjose.backupspoc
+
+
+
+
+

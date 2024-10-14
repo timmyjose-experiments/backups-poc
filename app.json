@@ -38,6 +38,15 @@
     },
     "plugins": [
       [
+        "./src/plugins/withAndroidApplicationAttributes.js",
+        {
+          "android:backupAgent": "expo.modules.androidkvbackupagent.PayyBackupAgent",
+          "android:allowBackup": "true",
+          "android:restoreAnyVersion": "true"
+        }
+      ],
+
+      [
         "react-native-cloud-storage",
         {
           "iCloudContainerEnvironment": "Production",

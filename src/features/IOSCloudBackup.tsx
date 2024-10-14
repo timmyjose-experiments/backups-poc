@@ -6,13 +6,13 @@ import styles from '../styles'
 import {CloudStorage, useIsCloudAvailable} from 'react-native-cloud-storage'
 import {useCallback, useState} from 'react'
 
-const CLOUD_BACKUP_FILE = '/backupspoc.json'
+const CLOUD_BACKUP_FILE = 'backup.spoc.backup'
 const PK_KEY = 'privateKey'
 
 const backup = async (key: string, value: string | null): Promise<void> => {
   try {
     alert(`Saving key: '${key}' with value: '${value}'`)
-    await CloudStorage.writeFile(CLOUD_BACKUP_FILE, JSON.stringify({
+    await CloudStorage.writeFile(`/${CLOUD_BACKUP_FILE}`, JSON.stringify({
       [PK_KEY]: value
     }))
   } catch (err: any) {
