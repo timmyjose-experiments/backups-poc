@@ -2,6 +2,11 @@
 
 set -euxo pipefail
 
+EAS_BUILD=${EAS_BUILD:-""}
+
+echo "EAS_BUILD = ${EAS_BUILD}"
+
+
 ANDROID_DIR=android
 IOS_DIR=ios
 
@@ -25,6 +30,11 @@ if [[ "$@" == *"--clean"* ]]; then
 fi
 
 yarn install
+
+if [[ "${EAS_BUILD}" ]]; then
+  cd android-kv-backup-agent
+  yarn clean && yarn prepare
+fi
 
 
 if [[ ! -d "${ANDROID_DIR}" || ! -d "${IOS_DIR}" ]]; then

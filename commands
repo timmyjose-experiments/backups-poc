@@ -38,7 +38,55 @@ Restore:
 
 adb shell bmgr restore <TOKEN> com.timmyjose.backupspoc
 
+adb -s emulator-5556 logcat -s AndroidKVBackupAgentModule,PayyBackupAgent,BackupManagerService,BackupTransportService
+
+With manual restore of restoreSet (token)
+
+7:08:34.052   508  1769 D BackupManagerService: [UserID:0] agentConnected pkg=com.timmyjose.backupspoc agent=android.os.BinderProxy@508b3f6
+10-14 17:08:34.052   508  1433 I BackupManagerService: [UserID:0] got agent android.app.IBackupAgent$Stub$Proxy@1cdc3f7
+10-14 17:08:34.052   508  1433 D BackupManagerService: initiateOneRestore packageName=com.timmyjose.backupspoc
+10-14 17:08:34.059   508  1433 D BackupManagerService: restoreFinished packageName=com.timmyjose.backupspoc
+10-14 17:08:34.061   508  1433 D BackupManagerService: Restore complete, killing host process of com.timmyjose.backupspoc
+10-14 17:08:34.061   508  1433 V BackupManagerService: No more packages; finishing restore
+10-14 17:08:34.062   508  1433 I BackupManagerService: Restore complete.
+10-14 17:08:34.062   508  1433 V BackupManagerService: [UserID:0] Released wakelock:*backup*-0-1433
+10-14 17:08:34.062   508  1433 V BackupManagerService: [UserID:0] Clearing restore session and halting timeout
 
 
 
 
+With Gmail set up:
+
+10-14 17:09:37.730   508   574 V BackupManagerService: [UserID:0] restoreAtInstall pkg=com.timmyjose.backupspoc token=a restoreSet=0
+10-14 17:09:37.730   508   574 V BackupManagerService: [UserID:0] Finishing install immediately
+
+With Gmail set up again after installation of app, and then reinstalling app:
+
+10-14 18:02:25.634   508   574 V BackupManagerService: [UserID:0] restoreAtInstall pkg=com.timmyjose.backupspoc token=13 restoreSet=3d6f989cd12782c2
+10-14 18:02:25.635   508   574 V BackupManagerService: [UserID:0] Acquired wakelock:*backup*-0-1433
+10-14 18:02:25.635   508  1433 D BackupManagerService: MSG_RUN_RESTORE observer=null
+10-14 18:02:25.636   508  1433 D BackupManagerService: Starting restore.
+10-14 18:02:26.210   508  1433 D BackupManagerService: initiateOneRestore packageName=@pm@
+10-14 18:02:26.220   508  1433 V BackupManagerService: No more packages; finishing restore
+10-14 18:02:26.221   508  1433 I BackupManagerService: Restore complete.
+
+But still no backup data seen
+
+
+
+DEVICE (OPPO):
+===============
+
+10-15 13:32:07.628  2407  2546 V BackupManagerService: restoreAtInstall pkg=com.timmyjose.backupspoc token=196 restoreSet=332c22252cadf259
+10-15 13:32:07.630  2407  4832 D BackupManagerService: MSG_RUN_RESTORE observer=null
+10-15 13:32:07.631  2407  4832 D BackupManagerService: Starting restore.
+10-15 13:32:08.703  2407  4832 D BackupManagerService: initiateOneRestore packageName=@pm@
+10-15 13:32:08.863  2407  4832 I BackupManagerService: Next restore package: RestoreDescription{com.timmyjose.backupspoc : KEY_VALUE}
+10-15 13:32:08.882  2407  4832 D BackupManagerService: awaiting agent for ApplicationInfo{7ab77c0 com.timmyjose.backupspoc}
+10-15 13:32:12.026  2407  5332 D BackupManagerService: agentConnected pkg=com.timmyjose.backupspoc agent=android.os.BinderProxy@7b04fec
+10-15 13:32:12.027  2407  4832 I BackupManagerService: got agent android.app.IBackupAgent$Stub$Proxy@698d64a
+10-15 13:32:12.027  2407  4832 D BackupManagerService: initiateOneRestore packageName=com.timmyjose.backupspoc
+10-15 13:32:12.057  2407  4832 D BackupManagerService: restoreFinished packageName=com.timmyjose.backupspoc
+10-15 13:32:12.059  2407  4832 D BackupManagerService: Restore complete, killing host process of com.timmyjose.backupspoc
+10-15 13:32:12.062  2407  4832 V BackupManagerService: No more packages; finishing restore
+10-15 13:32:12.065  2407  4832 I BackupManagerService: Restore complete.
