@@ -6,6 +6,8 @@ android
 ios
 package-lock.json
 .vim
+!android-kv-backup-agent/android
+!android-kv-backup-agent/ios
 
 # Expo
 .expo/

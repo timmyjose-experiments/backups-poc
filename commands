@@ -90,3 +90,6 @@ DEVICE (OPPO):
 10-15 13:32:12.059  2407  4832 D BackupManagerService: Restore complete, killing host process of com.timmyjose.backupspoc
 10-15 13:32:12.062  2407  4832 V BackupManagerService: No more packages; finishing restore
 10-15 13:32:12.065  2407  4832 I BackupManagerService: Restore complete.
+
+
+https://developer.android.com/identity/data/autobackup#ImplementingBackupAgent
