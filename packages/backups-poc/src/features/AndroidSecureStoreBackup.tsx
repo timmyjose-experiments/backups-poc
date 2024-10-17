@@ -1,7 +1,7 @@
-import {useNavigation} from '@react-navigation/native'
-import {NativeStackNavigationProp} from '@react-navigation/native-stack'
-import {RootStackParamList} from '../App'
-import {Pressable, Text, View, TextInput} from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../App'
+import { Pressable, Text, View, TextInput } from 'react-native'
 import styles from '../styles'
 import { useCallback, useState } from 'react'
 import { backup, PK_KEY, restore } from './util'
@@ -31,9 +31,9 @@ const AndroidSecureStoreBackup = () => {
       { loadTime !== null && (<Text>Took {loadTime}ms</Text>)}
       <TextInput
         style={styles.textInput}
-        onChangeText={text => { 
+        onChangeText={text => {
           setRestoredPrivateKey(null)
-          setPrivateKey(text) 
+          setPrivateKey(text)
         }}
         placeholder='Enter new private key' />
       <View style={{ flexDirection: 'row' }}>

@@ -31,10 +31,9 @@ fi
 
 yarn install
 
-if [[ "${EAS_BUILD}" ]]; then
-  cd android-kv-backup-agent
-  yarn clean && yarn prepare
-fi
+echo "Preparing the Android Key-Value Backup Agent plugin..."
+yarn workspace android-kv-backup-agent clean
+yarn workspace android-kv-backup-agent prepare
 
 
 if [[ ! -d "${ANDROID_DIR}" || ! -d "${IOS_DIR}" ]]; then

@@ -1,27 +1,30 @@
-import {useNavigation} from '@react-navigation/native'
-import {NativeStackNavigationProp} from '@react-navigation/native-stack'
-import {RootStackParamList} from '../App'
-import {Pressable, View, Text, TextInput} from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../App'
+import { Pressable, Text, View, TextInput } from 'react-native'
 import styles from '../styles'
-import { useCallback, useState } from 'react'
-import { backup, PK_KEY, restore } from './util'
+import { useState, useCallback } from 'react'
+import { backupData, restoreData } from 'android-kv-backup-agent'
 
-const IOSSecureStoreBackup = () => {
+const PK_KEY = 'privateKey'
+
+const AndroidCloudBackup = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
 
   const [privateKey, setPrivateKey] = useState<string | null>(null)
   const [restoredPrivateKey, setRestoredPrivateKey] = useState<string | null>(null)
   const [loadTime, setLoadTime] = useState<number | null>(null)
 
-  const handleBackup = useCallback(async (value: string | null) => {
+  const handleBackup = useCallback(async () => {
     const startTime = Date.now()
-    await backup(PK_KEY, value!)
+    alert(`Saving key: '${PK_KEY}' with value: '${privateKey}'`)
+    backupData(PK_KEY, privateKey!)
     setLoadTime(Date.now() - startTime)
-  }, [])
+  }, [privateKey])
 
   const handleRestore = useCallback(async () => {
     const startTime = Date.now()
-    setRestoredPrivateKey(await restore(PK_KEY))
+    setRestoredPrivateKey(restoreData(PK_KEY))
     setLoadTime(Date.now() - startTime)
   }, [])
 
@@ -31,19 +34,19 @@ const IOSSecureStoreBackup = () => {
       { loadTime !== null && (<Text>Took {loadTime}ms</Text>)}
       <TextInput
         style={styles.textInput}
-        onChangeText={text => { 
+        onChangeText={text => {
           setRestoredPrivateKey(null)
-          setPrivateKey(text) 
+          setPrivateKey(text)
         }}
         placeholder='Enter new private key' />
       <View style={{ flexDirection: 'row' }}>
         <Pressable
-          style={styles.smallButton}
-          onPress={() => handleBackup(privateKey)}>
+          style={styles.button}
+          onPress={() => handleBackup()}>
           <Text>Backup</Text>
         </Pressable>
         <Pressable
-          style={styles.smallButton}
+          style={styles.button}
           onPress={handleRestore}>
           <Text>Restore</Text>
         </Pressable>
@@ -57,4 +60,4 @@ const IOSSecureStoreBackup = () => {
   )
 }
 
-export default IOSSecureStoreBackup
+export default AndroidCloudBackup

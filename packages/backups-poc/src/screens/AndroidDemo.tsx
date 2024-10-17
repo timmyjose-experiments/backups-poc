@@ -1,7 +1,7 @@
-import {useNavigation} from '@react-navigation/native'
-import {NativeStackNavigationProp} from '@react-navigation/native-stack'
-import {RootStackParamList} from '../App'
-import {Pressable, View, Text} from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../App'
+import { Pressable, View, Text } from 'react-native'
 import styles from '../styles'
 
 const AndroidBackup = () => {

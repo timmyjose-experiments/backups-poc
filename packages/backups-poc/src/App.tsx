@@ -1,5 +1,5 @@
-import {NavigationContainer} from '@react-navigation/native'
-import {createNativeStackNavigator} from '@react-navigation/native-stack'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Main from './screens/Main'
 import AndroidDemo from './screens/AndroidDemo'
 import AndroidSecureStoreBackup from './features/AndroidSecureStoreBackup'
