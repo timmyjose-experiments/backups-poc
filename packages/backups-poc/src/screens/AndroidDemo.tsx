@@ -20,6 +20,11 @@ const AndroidBackup = () => {
         <Text>Cloud Test</Text>
       </Pressable>
       <Pressable
+        style={styles.button}
+        onPress={() => navigation.navigate('AndroidGDriveBackup')}>
+        <Text>Google Drive Test</Text>
+      </Pressable>
+      <Pressable
         style={styles.smallButton}
         onPress={() => navigation.navigate('Main')}>
         <Text>Home</Text>
