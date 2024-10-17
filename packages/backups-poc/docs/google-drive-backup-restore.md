@@ -46,3 +46,8 @@ Logistical:
       configuration []
 
 
+## Scratchpad
+
+* If `Google Drive` access token is not set, and `readFile` is called, "Error: Google Drive access token is not set, cannot call function readFile" (from the `react-native-cloud-storage` library).
+
+* If logged in to Google Account, but no backup available/set, "Error: file not found" (from the `react-native-cloud-storage` library).
