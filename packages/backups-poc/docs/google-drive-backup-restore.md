@@ -20,12 +20,9 @@ On second thought, most of the scenarios above will be applicable only to the ma
 
 For this PoC, restricting scope to the functionality:
 
-    * `iOS` details optional in `expo` plugin? []
+Features:
 
     * Proper handling of environment variables (for different envs in Google Cloud Console) []
-
-    * Look at Firebase approach? []
-        (https://react-native-google-signin.github.io/docs/setting-up/get-config-file)
 
     * Ability to detect Cloud support []
 
@@ -37,5 +34,15 @@ For this PoC, restricting scope to the functionality:
 
     * Error-handling:
         * TBD []
+
+Logistical:
+
+    * `iOS` details optional in `expo` plugin? []
+
+    * Look at Firebase approach? []
+        (https://react-native-google-signin.github.io/docs/setting-up/get-config-file)
+
+    * Handling SHAs between different environments (prenet, testnet, mainnet etc.) correctly, tied to the Google Cloud Console/Firebase
+      configuration []
 
 

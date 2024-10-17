@@ -10,6 +10,8 @@ import IOSCloudBackup from './features/IOSCloudBackup'
 import AndroidGDriveBackup from './features/AndroidGDriveBackup'
 import { useEffect } from 'react'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
+import { Provider } from 'react-redux'
+import { store } from './store/store'
 
 export type RootStackParamList = {
   Main: undefined
@@ -34,18 +36,20 @@ const App = () => {
   }, [])
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name='Main' component={Main} />
-        <Stack.Screen name='AndroidDemo' component={AndroidDemo} />
-        <Stack.Screen name='AndroidSecureStoreBackup' component={AndroidSecureStoreBackup} />
-        <Stack.Screen name='AndroidCloudBackup' component={AndroidCloudBackup} />
-        <Stack.Screen name='AndroidGDriveBackup' component={AndroidGDriveBackup} />
-        <Stack.Screen name='IOSDemo' component={IOSDemo} />
-        <Stack.Screen name='IOSecureStoreBackup' component={IOSSecureStoreBackup} />
-        <Stack.Screen name='IOSCloudBackup' component={IOSCloudBackup} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name='Main' component={Main} />
+          <Stack.Screen name='AndroidDemo' component={AndroidDemo} />
+          <Stack.Screen name='AndroidSecureStoreBackup' component={AndroidSecureStoreBackup} />
+          <Stack.Screen name='AndroidCloudBackup' component={AndroidCloudBackup} />
+          <Stack.Screen name='AndroidGDriveBackup' component={AndroidGDriveBackup} />
+          <Stack.Screen name='IOSDemo' component={IOSDemo} />
+          <Stack.Screen name='IOSecureStoreBackup' component={IOSSecureStoreBackup} />
+          <Stack.Screen name='IOSCloudBackup' component={IOSCloudBackup} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   )
 }
 
