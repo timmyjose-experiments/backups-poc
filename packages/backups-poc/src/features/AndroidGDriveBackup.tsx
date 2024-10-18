@@ -37,7 +37,7 @@ const restore = async (key: string): Promise<string> => {
 const AndroidGDriveBackup = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
 
-  const { signIn, signOut, accessToken, signinError } = useGoogleSignin()
+  const { signIn, accessToken, signinError } = useGoogleSignin()
 
   const [privateKey, setPrivateKey] = useState<string | null>(null)
   const [restoredPrivateKey, setRestoredPrivateKey] = useState<string | null>(null)
@@ -55,7 +55,7 @@ const AndroidGDriveBackup = () => {
     CloudStorage.setProviderOptions({
       accessToken
     })
-  }, [accessToken])
+  }, [accessToken, signIn])
 
   const handleBackup = useCallback(async () => {
     setLoading(true)

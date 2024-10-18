@@ -1,5 +1,5 @@
 import { GoogleSignin, isCancelledResponse, isErrorWithCode, isNoSavedCredentialFoundResponse, isSuccessResponse, statusCodes } from '@react-native-google-signin/google-signin'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export enum GoogleSigninErrorType {
   SigninInProgress = 'Sign-in is in progress',

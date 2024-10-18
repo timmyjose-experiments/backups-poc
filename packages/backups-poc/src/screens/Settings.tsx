@@ -29,7 +29,7 @@ const Settings = () => {
       alert(err)
     }
     dispatch(enableBackup())
-  }, [dispatch])
+  }, [dispatch, signIn])
 
   const disableGoogleCloudBackup = useCallback(async () => {
     dispatch(disableBackup())
