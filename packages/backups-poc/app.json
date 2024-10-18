@@ -45,12 +45,7 @@
           "android:restoreAnyVersion": "true"
         }
       ],
-      [
-        "@react-native-google-signin/google-signin",
-        {
-          "iosUrlScheme": "com.googleusercontent.apps.500178956024-2vhtu4v6ngkn5fbds31ugfb7jle95ifq"
-        }
-      ],
+      "@react-native-google-signin/google-signin",
       [
         "react-native-cloud-storage",
         {

@@ -10,6 +10,10 @@ import IOSCloudBackup from './features/IOSCloudBackup'
 import AndroidGDriveBackup from './features/AndroidGDriveBackup'
 import { useEffect } from 'react'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
+import { Provider } from 'react-redux'
+import { persistor, store } from './store/store'
+import { PersistGate } from 'redux-persist/integration/react'
+import Settings from './screens/Settings'
 
 export type RootStackParamList = {
   Main: undefined
@@ -20,6 +24,7 @@ export type RootStackParamList = {
   IOSDemo: undefined
   IOSecureStoreBackup: undefined
   IOSCloudBackup: undefined
+  Settings: undefined
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
@@ -28,24 +33,28 @@ const App = () => {
   // configure Google sign-in
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: '500178956024-31fkohd2lo9730tj73pc1jud1dvgd0o1.apps.googleusercontent.com',
-      scopes: ['https://www.googleapis.com/auth/drive.appdata'],
+      scopes: ['https://www.googleapis.com/auth/drive.appdata']
     })
   }, [])
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name='Main' component={Main} />
-        <Stack.Screen name='AndroidDemo' component={AndroidDemo} />
-        <Stack.Screen name='AndroidSecureStoreBackup' component={AndroidSecureStoreBackup} />
-        <Stack.Screen name='AndroidCloudBackup' component={AndroidCloudBackup} />
-        <Stack.Screen name='AndroidGDriveBackup' component={AndroidGDriveBackup} />
-        <Stack.Screen name='IOSDemo' component={IOSDemo} />
-        <Stack.Screen name='IOSecureStoreBackup' component={IOSSecureStoreBackup} />
-        <Stack.Screen name='IOSCloudBackup' component={IOSCloudBackup} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name='Main' component={Main} />
+            <Stack.Screen name='AndroidDemo' component={AndroidDemo} />
+            <Stack.Screen name='AndroidSecureStoreBackup' component={AndroidSecureStoreBackup} />
+            <Stack.Screen name='AndroidCloudBackup' component={AndroidCloudBackup} />
+            <Stack.Screen name='AndroidGDriveBackup' component={AndroidGDriveBackup} />
+            <Stack.Screen name='IOSDemo' component={IOSDemo} />
+            <Stack.Screen name='IOSecureStoreBackup' component={IOSSecureStoreBackup} />
+            <Stack.Screen name='IOSCloudBackup' component={IOSCloudBackup} />
+            <Stack.Screen name='Settings' component={Settings} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
   )
 }
 

@@ -3,18 +3,16 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../App'
 import { Pressable, View, Text, TextInput } from 'react-native'
 import styles from '../styles'
-import { CloudStorage, useIsCloudAvailable } from 'react-native-cloud-storage'
+import { CloudStorage, CloudStorageScope, useIsCloudAvailable } from 'react-native-cloud-storage'
 import { useCallback, useState } from 'react'
-
-const CLOUD_BACKUP_FILE = 'backupspoc.json'
-const PK_KEY = 'privateKey'
+import { CLOUD_BACKUP_FILE, CLOUD_BACKUP_KEY } from '../constants'
 
 const backup = async (key: string, value: string | null): Promise<void> => {
   try {
     alert(`Saving key: '${key}' with value: '${value}'`)
     await CloudStorage.writeFile(`/${CLOUD_BACKUP_FILE}`, JSON.stringify({
-      [PK_KEY]: value
-    }))
+      [CLOUD_BACKUP_KEY]: value
+    }), CloudStorageScope.AppData)
   } catch (err: any) {
     alert(err)
   }
@@ -23,7 +21,7 @@ const backup = async (key: string, value: string | null): Promise<void> => {
 const restore = async (key: string): Promise<string> => {
   let result = 'Not Found'
   try {
-    const backupValue = JSON.parse(await CloudStorage.readFile(CLOUD_BACKUP_FILE))
+    const backupValue = JSON.parse(await CloudStorage.readFile(CLOUD_BACKUP_FILE, CloudStorageScope.AppData))
 
     if (backupValue && typeof backupValue === 'object' && key in backupValue) {
       result = backupValue[key]
@@ -46,13 +44,13 @@ const IOSCloudBackup = () => {
 
   const handleBackup = useCallback(async () => {
     const startTime = Date.now()
-    await backup(PK_KEY, privateKey)
+    await backup(CLOUD_BACKUP_KEY, privateKey)
     setLoadTime(Date.now() - startTime)
   }, [privateKey])
 
   const handleRestore = useCallback(async () => {
     const startTime = Date.now()
-    setRestoredPrivateKey(await restore(PK_KEY))
+    setRestoredPrivateKey(await restore(CLOUD_BACKUP_KEY))
     setLoadTime(Date.now() - startTime)
   }, [])
 
