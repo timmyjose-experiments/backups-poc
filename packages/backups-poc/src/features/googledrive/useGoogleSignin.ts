@@ -1,42 +1,106 @@
-import { GoogleSignin, isErrorWithCode, isSuccessResponse, statusCodes } from '@react-native-google-signin/google-signin'
+import { GoogleSignin, isCancelledResponse, isErrorWithCode, isNoSavedCredentialFoundResponse, isSuccessResponse, statusCodes } from '@react-native-google-signin/google-signin'
 import { useState } from 'react'
 
-export class GoogleSiginError extends Error {}
+export enum GoogleSigninErrorType {
+  SigninInProgress = 'Sign-in is in progress',
+  GooglePlayServicesNotAvailable = 'Google Play services are not available for user',
+  SigninCancelledByUser = 'Sign-in was cancelled by user',
+  NotSignedInPreviously = 'User has not signed in previously',
+  GenericError = 'Generic Error'
+}
+
+export class GoogleSigninError extends Error {
+  type: GoogleSigninErrorType
+
+  constructor(type: GoogleSigninErrorType, message?: string) {
+    super(message)
+    this.type = type
+    Object.setPrototypeOf(this, new.target.prototype)
+  }
+}
+
+const processSigninError = (err: any) => {
+  if (isErrorWithCode(err)) {
+    switch (err.code) {
+      case statusCodes.IN_PROGRESS:
+        throw new GoogleSigninError(GoogleSigninErrorType.SigninInProgress)
+      case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+        throw new GoogleSigninError(GoogleSigninErrorType.GooglePlayServicesNotAvailable)
+      default:
+        throw new GoogleSigninError(GoogleSigninErrorType.GenericError, err.message)
+    }
+  } else {
+    // non-library error
+    throw new GoogleSigninError(GoogleSigninErrorType.GenericError, err)
+  }
+}
 
 const useGoogleSignin = () => {
   const [accessToken, setAccessToken] = useState<string | null>(null)
-  const [signinError, setSigninError] = useState<string | null>(null)
+  const [signinError, setSiginError] = useState<string | null>(null)
 
-  const signIn = async () => {
+  const signInSilently = async () => {
     try {
-      await GoogleSignin.hasPlayServices()
-      const response = await GoogleSignin.signIn()
+      const response = await GoogleSignin.signInSilently()
 
-      if (isSuccessResponse(response)) {
+      if (isNoSavedCredentialFoundResponse(response)) {
+        throw new GoogleSigninError(GoogleSigninErrorType.NotSignedInPreviously)
+      } else if (isSuccessResponse(response)) {
         if (response.data === null) {
           setAccessToken(null)
         } else {
           const tokResp = await GoogleSignin.getTokens()
           setAccessToken(tokResp.accessToken)
         }
-      } else {
-        throw new GoogleSiginError('Sign-in was cancelled by user')
       }
     } catch (err: any) {
-      if (isErrorWithCode(err)) {
-        switch (err.code) {
-          case statusCodes.IN_PROGRESS:
-            setSigninError('Sign-in is in progress')
-            break
-          case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-            setSigninError('Google Play services not available for device')
-            break
-          default:
-            setSigninError(err.message)
+      processSigninError(err)
+    }
+  }
+
+  const signInExplicitly = async () => {
+    try {
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true })
+      const response = await GoogleSignin.signIn()
+
+      if (isSuccessResponse(response)) {
+        if (response.data === null) {
+          setAccessToken(null)
+        } else {
+          const tokenResponse = await GoogleSignin.getTokens()
+          setAccessToken(tokenResponse.accessToken)
+        }
+      } else if (isCancelledResponse(response)) {
+        throw new GoogleSigninError(GoogleSigninErrorType.SigninCancelledByUser)
+      }
+    } catch (err: any) {
+      processSigninError(err)
+    }
+  }
+
+  const signIn = async () => {
+    try {
+    const hasPreviouslySignedIn = GoogleSignin.hasPreviousSignIn()
+
+    // if previously signed-in, sign in silently and get the latest token
+    if (hasPreviouslySignedIn) {
+      await signInSilently()
+    } else {
+      await signInExplicitly()
+    }
+    // set the access token
+    const response = await GoogleSignin.getTokens()
+    setAccessToken(response.accessToken)
+
+    } catch (err: any) {
+      if (err instanceof GoogleSigninError) {
+        if (err.type === GoogleSigninErrorType.GenericError) {
+          setSiginError(err.message)
+        } else {
+          setSiginError(err.type)
         }
       } else {
-        // non-library error
-        throw new GoogleSiginError(err)
+        setSiginError(err)
       }
     }
   }
@@ -46,7 +110,7 @@ const useGoogleSignin = () => {
       await GoogleSignin.signOut()
       setAccessToken(null)
     } catch (err: any) {
-      setSigninError(err)
+      throw new GoogleSigninError(GoogleSigninErrorType.GenericError, err.message)
     }
   }
 

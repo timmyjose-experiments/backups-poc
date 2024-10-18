@@ -26,6 +26,10 @@ Features:
 
     * Ability to detect Cloud support []
 
+        (`useIsCloudAvailable` for `Android` simply returns if Google Drive `accessToken` is set. Need a custom implementation. )
+
+    * Set up persistence scaffold [✅]
+
     * Ability to persist access token/access token generation mechanism once Google Account linked []
 
     * Ability to login "silently" without prompting the user - for `writeBackupData` (Backup Provider API) []
@@ -51,3 +55,4 @@ Logistical:
 * If `Google Drive` access token is not set, and `readFile` is called, "Error: Google Drive access token is not set, cannot call function readFile" (from the `react-native-cloud-storage` library).
 
 * If logged in to Google Account, but no backup available/set, "Error: file not found" (from the `react-native-cloud-storage` library).
+
