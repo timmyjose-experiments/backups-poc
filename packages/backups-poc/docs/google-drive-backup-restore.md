@@ -24,7 +24,7 @@ Features:
 
     * Proper handling of environment variables (for different envs in Google Cloud Console) []
 
-    * Ability to detect Cloud support []
+    * Ability to detect Cloud support [❌]
 
         (`useIsCloudAvailable` for `Android` simply returns if Google Drive `accessToken` is set. Need a custom implementation. )
 
@@ -71,8 +71,8 @@ Logistical:
         - the first linked and backed up account works, but the secondary account does not. How to handle this?
           So `signOut` works -> to avoid losing keys, user will need to make sure the __same__ account is used throughout on all devices, consistently 
 
-* What happens if the user has setup up a Google account, backup happens, and then the user disconnects the Google account ? []
-    And then reconnects? []
+* (Single device) What happens if the user has setup up a Google account, backup happens, and then the user disconnects the Google account ? 
+    And then reconnects? [✅]
 
 * Google account enabled -> Password changed []
 
