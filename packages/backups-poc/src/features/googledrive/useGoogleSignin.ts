@@ -1,5 +1,5 @@
 import { GoogleSignin, isCancelledResponse, isErrorWithCode, isNoSavedCredentialFoundResponse, isSuccessResponse, statusCodes } from '@react-native-google-signin/google-signin'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 export enum GoogleSigninErrorType {
   SigninInProgress = 'Sign-in is in progress',
@@ -39,10 +39,9 @@ const useGoogleSignin = () => {
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const [signinError, setSigninError] = useState<string | null>(null)
 
-  const signInSilently = async () => {
+  const signInSilently = useCallback(async () => {
     try {
       const response = await GoogleSignin.signInSilently()
-
       if (isNoSavedCredentialFoundResponse(response)) {
         throw new GoogleSigninError(GoogleSigninErrorType.NotSignedInPreviously)
       } else if (isSuccessResponse(response)) {
@@ -55,10 +54,11 @@ const useGoogleSignin = () => {
       }
     } catch (err: any) {
       processSigninError(err)
+      setAccessToken(null)
     }
-  }
+  }, [])
 
-  const signInExplicitly = async () => {
+  const signInExplicitly = useCallback(async () => {
     try {
       await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true })
       const response = await GoogleSignin.signIn()
@@ -71,15 +71,14 @@ const useGoogleSignin = () => {
           setAccessToken(tokenResponse.accessToken)
         }
       } else if (isCancelledResponse(response)) {
-        console.warn('Inside signInExplicitly - cancelled')
         throw new GoogleSigninError(GoogleSigninErrorType.SigninCancelledByUser)
       }
     } catch (err: any) {
       processSigninError(err)
     }
-  }
+  }, [])
 
-  const signIn = async () => {
+  const signIn = useCallback(async () => {
     try {
       const hasPreviouslySignedIn = GoogleSignin.hasPreviousSignIn()
 
@@ -89,9 +88,6 @@ const useGoogleSignin = () => {
       } else {
         await signInExplicitly()
       }
-      // set the access token
-      const response = await GoogleSignin.getTokens()
-      setAccessToken(response.accessToken)
     } catch (err: any) {
       if (err instanceof GoogleSigninError) {
         if (err.type === GoogleSigninErrorType.GenericError) {
@@ -103,16 +99,20 @@ const useGoogleSignin = () => {
         setSigninError(err.message)
       }
     }
-  }
+  }, [signInSilently, signInExplicitly])
 
-  const signOut = async () => {
+  const signOut = useCallback(async () => {
     try {
+      if (accessToken !== null) {
+        await GoogleSignin.clearCachedAccessToken(accessToken)
+      }
+      await GoogleSignin.revokeAccess()
       await GoogleSignin.signOut()
       setAccessToken(null)
     } catch (err: any) {
       throw new GoogleSigninError(GoogleSigninErrorType.GenericError, err.message)
     }
-  }
+  }, [accessToken])
 
   return {
     signIn,

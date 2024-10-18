@@ -38,7 +38,7 @@ const Settings = () => {
   const toggleBackup = async () => {
     if (googleDriveBackupEnabled) {
       await disableGoogleCloudBackup()
-      // also, sign out of the currently linked account so that a fresh account may be allowed to link
+      // also, revoke access and sign out of the currently linked account so that a fresh account may be allowed to link
       // the `react-native-google-signin` library has native persistence (persists old linked account)
       try {
         await signOut()

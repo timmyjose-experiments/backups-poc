@@ -49,6 +49,7 @@ const AndroidGDriveBackup = () => {
       try {
         await signIn()
       } catch (err: any) {
+        alert(err)
         // accessToken should be null if we are here
       }
     })()
@@ -108,13 +109,6 @@ const AndroidGDriveBackup = () => {
             </Pressable>
           </View>
         )}
-      {/* { accessToken && (
-        <Pressable
-          style={styles.button}
-          onPress={signOut}>
-          <Text>Sign Out</Text>
-        </Pressable>
-      )} */}
       <Pressable
         style={styles.button}
         onPress={() => navigation.goBack()}>
