@@ -31,7 +31,6 @@ const App = () => {
   // configure Google sign-in
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: '500178956024-31fkohd2lo9730tj73pc1jud1dvgd0o1.apps.googleusercontent.com',
       scopes: ['https://www.googleapis.com/auth/drive.appdata']
     })
   }, [])

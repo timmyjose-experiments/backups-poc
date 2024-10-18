@@ -32,14 +32,14 @@ Features:
 
     * Ability to persist access token/access token generation mechanism once Google Account linked []
 
-    * Ability to login "silently" without prompting the user - for `writeBackupData` (Backup Provider API) []
-
-    * Ability to login "silently" without prompting the user - for `getBackupData` (Backup Provider API) []
+    * Ability to login "silently" without prompting the user [✅] (if previously logged in)
 
     * Error-handling:
         * TBD []
 
 Logistical:
+
+    * `webClientId` not needed [✅]
 
     * `iOS` details optional in `expo` plugin? []
 
