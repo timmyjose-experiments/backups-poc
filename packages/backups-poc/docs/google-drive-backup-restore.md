@@ -31,6 +31,7 @@ Features:
     * Set up persistence scaffold [✅]
 
     * Ability to persist access token/access token generation mechanism once Google Account linked []
+        (looks like the `react-native-google-signin` library has its own native persistence mechanism, needs more research)
 
     * Ability to login "silently" without prompting the user [✅] (if previously logged in)
 
@@ -41,9 +42,9 @@ Logistical:
 
     * `webClientId` not needed [✅]
 
-    * `iOS` details optional in `expo` plugin? []
+    * `iOS` details optional in `expo` plugin? [✅]
 
-    * Look at Firebase approach? []
+    * Look at Firebase approach? [] (low-priority)
         (https://react-native-google-signin.github.io/docs/setting-up/get-config-file)
 
     * Handling SHAs between different environments (prenet, testnet, mainnet etc.) correctly, tied to the Google Cloud Console/Firebase
@@ -56,3 +57,11 @@ Logistical:
 
 * If logged in to Google Account, but no backup available/set, "Error: file not found" (from the `react-native-cloud-storage` library).
 
+* Once logged-in, the `react-native-google-signin` library appears to persist this fact in its own native persistence - app reinstalls seem to remember this fact. 
+  Need to see how this interacts with custom persistence (using `redux`, `redux-persist`, and `AsyncStorage`) []
+
+* What happens if there are multiple Google Accounts (with, say, a common Google Account) on source and target devices for backup and restore? []
+    (most likely, if the user logs into the __same__ account on both devices, we should be fine)
+
+* What happens if the user has setup up a Google account, backup happens, and then the user disconnects the Google account ? []
+    And then reconnects? []
