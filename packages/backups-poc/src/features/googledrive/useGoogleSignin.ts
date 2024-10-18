@@ -36,26 +36,25 @@ const processSigninError = (err: any) => {
 }
 
 const useGoogleSignin = () => {
-  const [accessToken, setAccessToken] = useState<string | null>(null)
   const [signinError, setSigninError] = useState<string | null>(null)
 
-  const signInSilently = useCallback(async () => {
+  const signInSilently = useCallback(async (): Promise<string | null> => {
     try {
       const response = await GoogleSignin.signInSilently()
       if (isNoSavedCredentialFoundResponse(response)) {
         throw new GoogleSigninError(GoogleSigninErrorType.NotSignedInPreviously)
       } else if (isSuccessResponse(response)) {
         if (response.data === null) {
-          setAccessToken(null)
+          return null
         } else {
           const tokResp = await GoogleSignin.getTokens()
-          setAccessToken(tokResp.accessToken)
+          return tokResp.accessToken
         }
       }
     } catch (err: any) {
       processSigninError(err)
-      setAccessToken(null)
     }
+    return null
   }, [])
 
   const signInExplicitly = useCallback(async () => {
@@ -65,10 +64,10 @@ const useGoogleSignin = () => {
 
       if (isSuccessResponse(response)) {
         if (response.data === null) {
-          setAccessToken(null)
+          return null
         } else {
           const tokenResponse = await GoogleSignin.getTokens()
-          setAccessToken(tokenResponse.accessToken)
+          return tokenResponse.accessToken
         }
       } else if (isCancelledResponse(response)) {
         throw new GoogleSigninError(GoogleSigninErrorType.SigninCancelledByUser)
@@ -76,6 +75,7 @@ const useGoogleSignin = () => {
     } catch (err: any) {
       processSigninError(err)
     }
+    return null
   }, [])
 
   const signIn = useCallback(async () => {
@@ -103,22 +103,17 @@ const useGoogleSignin = () => {
 
   const signOut = useCallback(async () => {
     try {
-      if (accessToken !== null) {
-        await GoogleSignin.clearCachedAccessToken(accessToken)
-      }
       await GoogleSignin.revokeAccess()
       await GoogleSignin.signOut()
-      setAccessToken(null)
     } catch (err: any) {
       throw new GoogleSigninError(GoogleSigninErrorType.GenericError, err.message)
     }
-  }, [accessToken])
+  }, [])
 
   return {
     signIn,
     signInSilently,
     signOut,
-    accessToken,
     signinError
   }
 }

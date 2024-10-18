@@ -15,7 +15,6 @@ const Settings = () => {
 
   // there is no direct way to detect if a Google Account is linked to on the device
   const googleCloudAvailable = true
-  // const [googleDriveBackupEnabled, setGoogleDriveBackupEnabled] = useState<boolean>(false)
   const googleDriveBackupEnabled = useSelector(getBackupStatus())
 
   const enableGoogleCloudBackup = useCallback(async () => {

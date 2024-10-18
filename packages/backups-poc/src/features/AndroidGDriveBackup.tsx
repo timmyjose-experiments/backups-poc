@@ -37,26 +37,27 @@ const restore = async (key: string): Promise<string> => {
 const AndroidGDriveBackup = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
 
-  const { signIn, accessToken, signinError } = useGoogleSignin()
+  const { signInSilently, signinError } = useGoogleSignin()
 
   const [privateKey, setPrivateKey] = useState<string | null>(null)
   const [restoredPrivateKey, setRestoredPrivateKey] = useState<string | null>(null)
   const [loadTime, setLoadTime] = useState<number | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
+  const [accessToken, setAccessToken] = useState<string | null>(null)
 
   useEffect(() => {
     (async () => {
       try {
-        await signIn()
+        const accessToken = await signInSilently()
+        CloudStorage.setProviderOptions({
+          accessToken
+        })
+        setAccessToken(accessToken)
       } catch (err: any) {
         alert(err)
-        // accessToken should be null if we are here
       }
     })()
-    CloudStorage.setProviderOptions({
-      accessToken
-    })
-  }, [accessToken, signIn])
+  }, [signInSilently])
 
   const handleBackup = useCallback(async () => {
     setLoading(true)
@@ -89,11 +90,7 @@ const AndroidGDriveBackup = () => {
         placeholder='Enter new private key' />
       { CloudStorage.getProvider() === CloudStorageProvider.GoogleDrive && !accessToken
         ? (
-          <Pressable
-            style={styles.button}
-            onPress={signIn}>
-            <Text>Sign In</Text>
-          </Pressable>
+          <Text>Not signed-in to Google Drive</Text>
         )
         : (
           <View style={{ flexDirection: 'row' }}>

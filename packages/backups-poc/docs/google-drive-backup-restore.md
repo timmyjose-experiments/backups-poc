@@ -30,8 +30,9 @@ Features:
 
     * Set up persistence scaffold [✅]
 
-    * Ability to persist access token/access token generation mechanism once Google Account linked []
-        (looks like the `react-native-google-signin` library has its own native persistence mechanism, needs more research)
+    * Ability to persist access token/access token generation mechanism once Google Account linked [✅]
+        (looks like the `react-native-google-signin` library has its own native persistence mechanism, this needs more research
+         for possible implications)
 
     * Ability to login "silently" without prompting the user [✅] (if previously logged in)
 
@@ -52,6 +53,7 @@ Logistical:
 
 
 ## Scratchpad
+
 
 * (Important) When a fresh account (with no backups) is linked and restore attempted, `FILE NOT FOUND`. This is from the `react-native-cloud-storage` library.
     This usecase should be handled for both `iOS` and `Android` the __first__ time (0 backups available).
@@ -81,4 +83,5 @@ Logistical:
 
               Any way to disable the native persistence of app data? []
 
+* Some retry mechanism if already connected to Google Account but silent login fails with authenticaton error? []
 
