@@ -15,7 +15,7 @@ const backup = async (key: string, value: string | null): Promise<void> => {
       [CLOUD_BACKUP_KEY]: value
     }), CloudStorageScope.AppData)
   } catch (err: any) {
-    alert(err)
+    alert(err.message)
   }
 }
 
@@ -28,7 +28,7 @@ const restore = async (key: string): Promise<string> => {
       result = backupValue[key]
     }
   } catch (err: any) {
-    alert(err)
+    alert(err.message)
   }
 
   return result
@@ -50,7 +50,8 @@ const AndroidGDriveBackup = () => {
       try {
         const accessToken = await signInSilently()
         CloudStorage.setProviderOptions({
-          accessToken
+          accessToken,
+          strictFilenames: true
         })
         setAccessToken(accessToken)
       } catch (err: any) {

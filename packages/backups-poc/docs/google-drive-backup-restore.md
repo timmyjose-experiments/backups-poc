@@ -85,3 +85,7 @@ Logistical:
 
 * Some retry mechanism if already connected to Google Account but silent login fails with authenticaton error? []
 
+## Bugs
+
+* if device 1 reconnects to Google Account, device 2 seems to lose access to the drive []
+

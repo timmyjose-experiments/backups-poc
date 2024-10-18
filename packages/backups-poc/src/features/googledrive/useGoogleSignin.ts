@@ -81,12 +81,11 @@ const useGoogleSignin = () => {
   const signIn = useCallback(async () => {
     try {
       const hasPreviouslySignedIn = GoogleSignin.hasPreviousSignIn()
-
       // if previously signed-in, sign in silently and get the latest token
       if (hasPreviouslySignedIn) {
-        await signInSilently()
+        return await signInSilently()
       } else {
-        await signInExplicitly()
+        return await signInExplicitly()
       }
     } catch (err: any) {
       if (err instanceof GoogleSigninError) {
@@ -99,11 +98,12 @@ const useGoogleSignin = () => {
         setSigninError(err.message)
       }
     }
+    return null
   }, [signInSilently, signInExplicitly])
 
   const signOut = useCallback(async () => {
     try {
-      await GoogleSignin.revokeAccess()
+      // await GoogleSignin.revokeAccess()
       await GoogleSignin.signOut()
     } catch (err: any) {
       throw new GoogleSigninError(GoogleSigninErrorType.GenericError, err.message)
@@ -113,6 +113,7 @@ const useGoogleSignin = () => {
   return {
     signIn,
     signInSilently,
+    signInExplicitly,
     signOut,
     signinError
   }
