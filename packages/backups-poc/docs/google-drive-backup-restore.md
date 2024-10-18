@@ -53,6 +53,9 @@ Logistical:
 
 ## Scratchpad
 
+* (Important) When a fresh account (with no backups) is linked and restore attempted, `FILE NOT FOUND`. This is from the `react-native-cloud-storage` library.
+    This usecase should be handled for both `iOS` and `Android` the __first__ time (0 backups available).
+
 * If `Google Drive` access token is not set, and `readFile` is called, "Error: Google Drive access token is not set, cannot call function readFile" (from the `react-native-cloud-storage` library).
 
 * If logged in to Google Account, but no backup available/set, "Error: file not found" (from the `react-native-cloud-storage` library).
@@ -63,12 +66,17 @@ Logistical:
 * What happens if there are multiple Google Accounts (with, say, a common Google Account) on source and target devices for backup and restore? [✅]
     (most likely, if the user logs into the __same__ account on both devices, we should be fine - [update] yes, works fine).
 
+*  What if, device 1 -> acct 1 does backup, device 2 has multiple accounts including acct 1 and acct 2, and device 3 has acct 2
+    Observed behaviour:
+        - the first linked and backed up account works, but the secondary account does not. How to handle this?
+          So `signOut` works -> to avoid losing keys, user will need to make sure the __same__ account is used throughout on all devices, consistently 
+
 * What happens if the user has setup up a Google account, backup happens, and then the user disconnects the Google account ? []
     And then reconnects? []
 
 * Google account enabled -> Password changed []
 
-(Important) * Logged in to Google Account -> Remove account from device -> trigger app -> library still retains previous user and tries to login, but hangs forever. 
+* (Important) Logged in to Google Account -> Remove account from device -> trigger app -> library still retains previous user and tries to login, but hangs forever. 
               If Google Account is restored manually in the device, app starts working again.
 
               Any way to disable the native persistence of app data? []

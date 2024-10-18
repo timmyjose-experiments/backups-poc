@@ -11,7 +11,7 @@ import useGoogleSignin from '../features/googledrive/useGoogleSignin'
 const Settings = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
   const dispatch = useDispatch()
-  const { signIn } = useGoogleSignin()
+  const { signIn, signOut } = useGoogleSignin()
 
   // there is no direct way to detect if a Google Account is linked to on the device
   const googleCloudAvailable = true
@@ -38,6 +38,13 @@ const Settings = () => {
   const toggleBackup = async () => {
     if (googleDriveBackupEnabled) {
       await disableGoogleCloudBackup()
+      // also, sign out of the currently linked account so that a fresh account may be allowed to link
+      // the `react-native-google-signin` library has native persistence (persists old linked account)
+      try {
+        await signOut()
+      } catch (err: any) {
+        alert(err)
+      }
     } else {
       await enableGoogleCloudBackup()
     }

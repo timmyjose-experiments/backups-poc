@@ -37,7 +37,7 @@ const processSigninError = (err: any) => {
 
 const useGoogleSignin = () => {
   const [accessToken, setAccessToken] = useState<string | null>(null)
-  const [signinError, setSiginError] = useState<string | null>(null)
+  const [signinError, setSigninError] = useState<string | null>(null)
 
   const signInSilently = async () => {
     try {
@@ -95,12 +95,12 @@ const useGoogleSignin = () => {
     } catch (err: any) {
       if (err instanceof GoogleSigninError) {
         if (err.type === GoogleSigninErrorType.GenericError) {
-          setSiginError(err.message)
+          setSigninError(err.message)
         } else {
-          setSiginError(err.type)
+          setSigninError(err.type)
         }
       } else {
-        setSiginError(err)
+        setSigninError(err.message)
       }
     }
   }
