@@ -45,6 +45,13 @@ const AndroidGDriveBackup = () => {
   const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
+    (async () => {
+      try {
+        await signIn()
+      } catch (err: any) {
+        // accessToken should be null if we are here
+      }
+    })()
     CloudStorage.setProviderOptions({
       accessToken
     })
@@ -101,13 +108,13 @@ const AndroidGDriveBackup = () => {
             </Pressable>
           </View>
         )}
-      { accessToken && (
+      {/* { accessToken && (
         <Pressable
           style={styles.button}
           onPress={signOut}>
           <Text>Sign Out</Text>
         </Pressable>
-      )}
+      )} */}
       <Pressable
         style={styles.button}
         onPress={() => navigation.goBack()}>

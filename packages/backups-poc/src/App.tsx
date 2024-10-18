@@ -13,6 +13,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin'
 import { Provider } from 'react-redux'
 import { persistor, store } from './store/store'
 import { PersistGate } from 'redux-persist/integration/react'
+import Settings from './screens/Settings'
 
 export type RootStackParamList = {
   Main: undefined
@@ -23,6 +24,7 @@ export type RootStackParamList = {
   IOSDemo: undefined
   IOSecureStoreBackup: undefined
   IOSCloudBackup: undefined
+  Settings: undefined
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
@@ -48,6 +50,7 @@ const App = () => {
             <Stack.Screen name='IOSDemo' component={IOSDemo} />
             <Stack.Screen name='IOSecureStoreBackup' component={IOSSecureStoreBackup} />
             <Stack.Screen name='IOSCloudBackup' component={IOSCloudBackup} />
+            <Stack.Screen name='Settings' component={Settings} />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

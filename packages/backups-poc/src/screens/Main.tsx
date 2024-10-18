@@ -10,11 +10,18 @@ const Main = () => {
   return (
     <View style={styles.container}>
       { Platform.OS === 'android' && (
-        <Pressable
-          style={styles.button}
-          onPress={() => navigation.navigate('AndroidDemo')}>
-          <Text>Android Backup</Text>
-        </Pressable>
+        <>
+          <Pressable
+            style={styles.button}
+            onPress={() => navigation.navigate('AndroidDemo')}>
+            <Text>Android Backup</Text>
+          </Pressable>
+          <Pressable
+            style={styles.button}
+            onPress={() => navigation.navigate('Settings')}>
+            <Text>Settings</Text>
+          </Pressable>
+        </>
       )}
 
       { Platform.OS === 'ios' && (

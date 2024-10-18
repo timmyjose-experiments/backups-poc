@@ -1,28 +1,28 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import { AppState } from '../../store/store'
 
 export interface GoogleDriveState {
-  accessToken: string | null
+  backupEnabled: boolean
 }
 
 const initialState: GoogleDriveState = {
-  accessToken: null
+  backupEnabled: false
 }
 
 export const googleDriveSlice = createSlice({
   name: 'googledrive',
   initialState,
   reducers: {
-    setAccessToken: (state, action: PayloadAction<string | null>) => {
-      state.accessToken = action.payload
+    enableBackup: (state) => {
+      state.backupEnabled = true
     },
-    revokeAccessToken: (state) => {
-      state.accessToken = null
+    disableBackup: (state) => {
+      state.backupEnabled = false
     }
   }
 })
 
-export const getGoogleDriveAccessToken = (state: AppState) => state.googleDrive.accessToken
+export const getBackupStatus = () => (state: AppState) => state.googleDrive.backupEnabled
 
-export const { setAccessToken, revokeAccessToken } = googleDriveSlice.actions
+export const { enableBackup, disableBackup } = googleDriveSlice.actions
 export default googleDriveSlice.reducer

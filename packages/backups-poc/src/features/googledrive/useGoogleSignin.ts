@@ -1,5 +1,5 @@
 import { GoogleSignin, isCancelledResponse, isErrorWithCode, isNoSavedCredentialFoundResponse, isSuccessResponse, statusCodes } from '@react-native-google-signin/google-signin'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export enum GoogleSigninErrorType {
   SigninInProgress = 'Sign-in is in progress',
@@ -71,6 +71,7 @@ const useGoogleSignin = () => {
           setAccessToken(tokenResponse.accessToken)
         }
       } else if (isCancelledResponse(response)) {
+        console.warn('Inside signInExplicitly - cancelled')
         throw new GoogleSigninError(GoogleSigninErrorType.SigninCancelledByUser)
       }
     } catch (err: any) {
@@ -80,18 +81,17 @@ const useGoogleSignin = () => {
 
   const signIn = async () => {
     try {
-    const hasPreviouslySignedIn = GoogleSignin.hasPreviousSignIn()
+      const hasPreviouslySignedIn = GoogleSignin.hasPreviousSignIn()
 
-    // if previously signed-in, sign in silently and get the latest token
-    if (hasPreviouslySignedIn) {
-      await signInSilently()
-    } else {
-      await signInExplicitly()
-    }
-    // set the access token
-    const response = await GoogleSignin.getTokens()
-    setAccessToken(response.accessToken)
-
+      // if previously signed-in, sign in silently and get the latest token
+      if (hasPreviouslySignedIn) {
+        await signInSilently()
+      } else {
+        await signInExplicitly()
+      }
+      // set the access token
+      const response = await GoogleSignin.getTokens()
+      setAccessToken(response.accessToken)
     } catch (err: any) {
       if (err instanceof GoogleSigninError) {
         if (err.type === GoogleSigninErrorType.GenericError) {
@@ -116,6 +116,7 @@ const useGoogleSignin = () => {
 
   return {
     signIn,
+    signInSilently,
     signOut,
     accessToken,
     signinError

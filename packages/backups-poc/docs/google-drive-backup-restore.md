@@ -60,8 +60,16 @@ Logistical:
 * Once logged-in, the `react-native-google-signin` library appears to persist this fact in its own native persistence - app reinstalls seem to remember this fact. 
   Need to see how this interacts with custom persistence (using `redux`, `redux-persist`, and `AsyncStorage`) []
 
-* What happens if there are multiple Google Accounts (with, say, a common Google Account) on source and target devices for backup and restore? []
-    (most likely, if the user logs into the __same__ account on both devices, we should be fine)
+* What happens if there are multiple Google Accounts (with, say, a common Google Account) on source and target devices for backup and restore? [✅]
+    (most likely, if the user logs into the __same__ account on both devices, we should be fine - [update] yes, works fine).
 
 * What happens if the user has setup up a Google account, backup happens, and then the user disconnects the Google account ? []
     And then reconnects? []
+
+* Google account enabled -> Password changed []
+
+(Important) * Logged in to Google Account -> Remove account from device -> trigger app -> library still retains previous user and tries to login, but hangs forever. 
+              If Google Account is restored manually in the device, app starts working again.
+
+              Any way to disable the native persistence of app data? []
+
