@@ -1,43 +1,62 @@
 package expo.modules.androidkvbackupagent
 
-import android.app.backup.BackupAgentHelper
-import android.app.backup.SharedPreferencesBackupHelper
-import android.content.SharedPreferences
+import android.app.backup.BackupAgent
+import android.app.backup.BackupDataInput
+import android.app.backup.BackupDataOutput
+import android.os.ParcelFileDescriptor
 import android.util.Log
-import android.app.backup.BackupDataInput 
-import android.os.ParcelFileDescriptor 
-import android.app.backup.BackupDataOutput 
+import java.io.IOException
+import android.content.Context
+import android.content.SharedPreferences
 
-// the actual preferences file containing the key-value pairs
-// used by the app (unique to the app)
 const val PREFS = "payy_app_prefs"
 
-// used by Android's Backup Agent internally to uniquely identify 
-// the preferences file
-const val PREFS_BACKUP_KEY = "payy_app_prefs_backup_key"
+class PayyBackupAgent : BackupAgent() {
+    override fun onRestore(data: BackupDataInput, appVersionCode: Int, newState: ParcelFileDescriptor) {
+        Log.d("PayyBackupAgent-new", "Restoring data")
 
-class PayyBackupAgent : BackupAgentHelper() {
-    override fun onCreate() {
-        Log.d("PayyBackupAgent", "Creating a SharedPreferencesBackupHelper")
-        SharedPreferencesBackupHelper(this, PREFS).also {
-            addHelper(PREFS_BACKUP_KEY, it)
+        try {
+            while (data.readNextHeader()) {
+                val key = data.key
+                val dataSize = data.dataSize
+
+                if (key == "privateKey") {
+                    val buffer = ByteArray(dataSize)
+                    data.readEntityData(buffer, 0, dataSize) // reads the entire entity at once
+                    val privateKeyRestoredValue = String(buffer)
+
+                    getSharedPreferences(PREFS).edit().putString("privateKey", privateKeyRestoredValue).commit()
+                }
+            }
+        } catch (e: IOException) {
+            Log.e("PayyBackupAgent", "Error during restore", e)
         }
     }
 
-    override fun onBackup(oldState: ParcelFileDescriptor?, data: BackupDataOutput?, newState: ParcelFileDescriptor?) {
-        Log.d("PayyBackupAgent", "onBackup called")
-        Log.d("PayyBackupAgent", "oldState: $oldState")
-        Log.d("PayyBackupAgent", "newState: $newState")
+    // helpers
+    private val context: Context
+        get() = this
 
-        super.onBackup(oldState, data, newState)
+    private fun getSharedPreferences(prefsFile: String): SharedPreferences {
+        return context.getSharedPreferences(prefsFile, Context.MODE_PRIVATE)
     }
 
-    override fun onRestore(data: BackupDataInput?, appVersionCode: Int, newState: ParcelFileDescriptor?) {
-        Log.d("PayyBackupAgent", "onRestore called")
-        Log.d("PayyBackupAgent", "data: $data")
-        Log.d("PayyBackupAgent", "appVersionCode: $appVersionCode")
-        Log.d("PayyBackupAgent", "newState: $newState")
+    override fun onBackup(
+        oldState: ParcelFileDescriptor,
+        data: BackupDataOutput,
+        newState: ParcelFileDescriptor
+    ) {
+        Log.d("PayyBackupAgent-new", "Backing up data")
 
-        super.onRestore(data, appVersionCode, newState)
+        // convert privateKey to byte array and store in the backup as a key-value pair
+        val backupKey = "privateKey"
+        val backupVal = getSharedPreferences(PREFS).getString("privateKey", NOT_FOUND)
+        Log.d("PayyBackupAgent", "Backing up: key: $backupKey, value: $backupVal")
+        val stringBytesOfUUID = backupVal?.toByteArray()
+
+        if (stringBytesOfUUID != null) {
+            data.writeEntityHeader(backupKey, stringBytesOfUUID.size)
+            data.writeEntityData(stringBytesOfUUID, stringBytesOfUUID.size)
+        }
     }
 }
