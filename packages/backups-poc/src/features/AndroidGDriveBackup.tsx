@@ -11,7 +11,7 @@ import { CLOUD_BACKUP_FILE, CLOUD_BACKUP_KEY } from '../constants'
 const backup = async (key: string, value: string | null): Promise<void> => {
   alert(`Saving key: ${key} with value: ${value}`)
   try {
-    CloudStorage.writeFile(CLOUD_BACKUP_FILE, JSON.stringify({
+    await CloudStorage.writeFile(CLOUD_BACKUP_FILE, JSON.stringify({
       [CLOUD_BACKUP_KEY]: value
     }), CloudStorageScope.AppData)
   } catch (err: any) {
